@@ -1,0 +1,19 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <h1>{{ title }}</h1>
+  <p>{{ flashMessage }}</p>
+  {% for post in posts %}
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+    <small>
+        <a href="/posts/view/{{ post.id }}">Leer más</a>
+        &nbsp;|&nbsp;
+        <a href="/posts/update/{{ post.id }}">Editar</a>
+        &nbsp;|&nbsp;
+        <a href="/posts/delete/{{ post.id }}" onclick="return confirm('¿Está seguro?');">Borrar</a>
+    </small>
+    <hr />
+  {% endfor %}
+  <a href="/posts/create">¡Añadir una nueva publicación!</a>
+{% endblock %}

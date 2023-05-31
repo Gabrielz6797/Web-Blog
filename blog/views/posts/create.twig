@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <form method="POST">
+        <div>
+            <label for="title">Título:</label><br />
+            <input id="title" name="title" type="text" />
+        </div>
+
+        <div>
+            <label for="body">Cuerpo:</label><br />
+            <textarea id="body" name="body"></textarea>
+        </div>
+
+        <input type="submit" value="Crear" />
+    </form>
+{% endblock %}
