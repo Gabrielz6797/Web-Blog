@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "eb98755",
+    "password": "Xeb98755!",
+    "database": "ci0137_eb98755",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "eb98755",
+    "password": "Xeb98755",
+    "database": "ci0137_eb98755",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "eb98755",
+    "password": "Xeb98755",
+    "database": "ci0137_eb98755",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
