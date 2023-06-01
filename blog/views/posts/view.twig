@@ -1,0 +1,15 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <h1>{{ title }}</h1>
+  <h2>{{ posts.title }}</h2>
+  <p>{{ posts.summary }}</p>
+  <p>{{ posts.author }}</p>
+  <small>
+      <a href="/posts/update/{{ post.id }}">Editar</a>
+      &nbsp;|&nbsp;
+      <a href="/posts/delete/{{ post.id }}" onclick="return confirm('¿Está seguro?');">Borrar</a>
+  </small>
+  <hr />
+  <a href="/posts/create">¡Añadir una nueva publicación!</a>
+{% endblock %}

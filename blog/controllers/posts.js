@@ -13,7 +13,7 @@ class PostController {
 
     async create(req, res, next) {
         if (req.method === 'POST') {
-            await Post.create({ title: req.body.title, body: req.body.body });
+            await Post.create({ title: req.body.title, summary: req.body.summary });
             res.redirect('/posts');
         }
         else {
@@ -26,7 +26,7 @@ class PostController {
             await Post.update(
             {
                 title: req.body.title,
-                body: req.body.body
+                summary: req.body.summary
             },
             {
                 where: {
@@ -55,6 +55,14 @@ class PostController {
         res.redirect('/posts');
     }
 
+    async view(req, res, next) {
+        const posts = await Post.findOne({
+            where: {
+                id: req.params.id
+            }
+        });
+        res.render('posts/view', { title: 'Weblog', posts: posts});
+    }
 }
 
 module.exports = PostController;
