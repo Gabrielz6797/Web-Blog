@@ -13,7 +13,7 @@ class PostController {
 
     async create(req, res, next) {
         if (req.method === 'POST') {
-            await Post.create({ title: req.body.title, summary: req.body.summary });
+            await Post.create({ title: req.body.title, summary: req.body.summary, image: req.body.image });
             res.redirect('/posts');
         }
         else {
