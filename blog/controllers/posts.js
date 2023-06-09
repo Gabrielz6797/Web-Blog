@@ -13,7 +13,7 @@ class PostController {
 
     async create(req, res, next) {
         if (req.method === 'POST') {
-            await Post.create({ title: req.body.title, summary: req.body.summary, image: req.body.image });
+            await Post.create({ title: req.body.title, date: Date(), image: req.body.image, summary: req.body.summary, author: req.body.author });
             res.redirect('/posts');
         }
         else {
@@ -25,8 +25,11 @@ class PostController {
         if (req.method === 'POST') {
             await Post.update(
             {
-                title: req.body.title,
-                summary: req.body.summary
+                title: req.body.title, 
+                date: Date(), 
+                image: req.body.image, 
+                summary: req.body.summary, 
+                author: req.body.author
             },
             {
                 where: {
@@ -62,6 +65,16 @@ class PostController {
             }
         });
         res.render('posts/view', { title: 'Weblog', posts: posts});
+    }
+
+    async author(req, res, next) {
+        console.log("autor: " + req.params.id)
+        const posts = await Post.findAll({
+            where: {
+                author: req.params.id
+            }
+        });
+        res.render('posts/author', { title: 'Weblog', posts: posts});
     }
 }
 

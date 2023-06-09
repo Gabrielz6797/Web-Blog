@@ -2,12 +2,11 @@
 
 {% block body %}
   <h1>{{ title }}</h1>
-  <p>{{ flashMessage }}</p>
   {% for post in posts %}
     <h2>{{ post.title }}</h2>
     <p>{{ post.summary }}</p>
     <p>{{ post.image }}</p>
-    <a href="/posts/author/{{ post.author }}">{{ post.author }}</a>
+    <a href="/posts/author/{{ post.id }}">{{ post.author }}</a>
     <small>
         <a href="/posts/view/{{ post.id }}">Leer más</a>
         &nbsp;|&nbsp;
