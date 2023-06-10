@@ -1,6 +1,11 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
+  <div class="container-fluid">
+  <a href="/posts/auth">
+    Login with GitHub
+  </a>
+  </div>
   <h1>{{ title }}</h1>
   <p>{{ flashMessage }}</p>
   {% for post in posts %}
