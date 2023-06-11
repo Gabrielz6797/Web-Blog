@@ -19,3 +19,13 @@
   {% endfor %}
   <a href="/posts/create">¡Añadir una nueva publicación!</a>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+      //var myDiv = $('#summary');
+      //myDiv.text(myDiv.text().substring(0,300) + '<a href="#">Read more</a>')
+      $(document).ready(function(){
+            console.log("Script working properly");
+        });
+    </script>
+{% endblock %}
