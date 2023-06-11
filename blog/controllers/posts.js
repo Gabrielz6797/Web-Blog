@@ -1,5 +1,4 @@
 const Post = require("../models").Post;
-var axios = require("axios");
 
 class PostController {
   async index(req, res, next) {
@@ -11,6 +10,9 @@ class PostController {
         flashMessage: req.session.flashMessage,
       });
     } else {
+      console.log(req.session.userName);
+      console.log(req.session.name);
+      console.log(req.session.email);
       res.render("posts/index", { title: "Weblog", posts: posts });
     }
   }
@@ -84,52 +86,6 @@ class PostController {
       },
     });
     res.render("posts/author", { title: "Weblog", posts: posts });
-  }
-
-  async auth(req, res, next) {
-    // Store parameters in an object
-    const params = {
-      scope: "read:user",
-      client_id: process.env.CLIENT_ID,
-    };
-
-    // Convert parameters to a URL-encoded string
-    const urlEncodedParams = new URLSearchParams(params).toString();
-    res.redirect(
-      `https://github.com/login/oauth/authorize?${urlEncodedParams}`
-    );
-  }
-
-  async githubCallback(req, res, next) {
-    const { code } = req.query;
-
-    const body = {
-      client_id: process.env.CLIENT_ID,
-      client_secret: process.env.CLIENT_SECRET,
-      code,
-    };
-
-    let accessToken;
-    const options = { headers: { accept: "application/json" } };
-
-    axios
-      .post("https://github.com/login/oauth/access_token", body, options)
-      .then((response) => response.data.access_token)
-      .then(async (token) => {
-        accessToken = token;
-
-        const { data } = await axios({
-          url: "https://api.github.com/user",
-          method: "get",
-          headers: {
-            Authorization: `token ${accessToken}`,
-          },
-        });
-        console.log(data); // { id, email, name, login, avatar_url }
-
-        res.redirect(`/posts?token=${token}`);
-      })
-      .catch((err) => res.status(500).json({ err: err.message }));
   }
 }
 
