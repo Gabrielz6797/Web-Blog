@@ -13,7 +13,9 @@
   <p>{{ flashMessage }}</p>
   {% for post in posts %}
     <h2>{{ post.title }}</h2>
-    <p id="summary">{{ post.summary }}</p>
+    <div class="summary" data-id="{{ post.id }}">
+    <p>{{ post.summary }}</p>
+    </div>
     <p>{{ post.image }}</p>
     <a href="/posts/author/{{ post.author }}">{{ post.author }}</a>
     <small>
@@ -30,10 +32,11 @@
 
 {% block javascripts %}
     <script>
-      var myDiv = $('#summary');
-      myDiv.text(myDiv.text().substring(0,300) + '<a href="#">Read more</a>')
-      $(document).ready(function(){
-        console.log("Script working properly");
+      $('.summary').each(function(i, obj) {
+        if($(this).html().length > 307){
+          var id = $(this).data('id');
+          $(this).html($(this).html().substring(0,307) + "... " + '<a href="/posts/view/' + id + '">Leer más</a>');
+        }
       });
     </script>
 {% endblock %}
