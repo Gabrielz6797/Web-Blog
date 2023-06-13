@@ -4,16 +4,27 @@ class PostController {
   async index(req, res, next) {
     const posts = await Post.findAll();
     if (req.session.flashMessage) {
+      let flashMessage = req.session.flashMessage;
+      req.session.flashMessage = undefined;
       res.render("posts/index", {
-        title: "Weblog",
+        title: "Diario web",
         posts: posts,
-        flashMessage: req.session.flashMessage,
+        user: req.session,
+        flashMessage: flashMessage,
       });
     } else {
-      console.log(req.session.userName);
-      console.log(req.session.name);
-      console.log(req.session.email);
-      res.render("posts/index", { title: "Weblog", posts: posts });
+      console.log("");
+      console.log("User:");
+      console.log("userName: " + req.session.userName);
+      console.log("name: " + req.session.name);
+      console.log("email: " + req.session.email);
+      console.log("admin: " + req.session.admin);
+      console.log("");
+      res.render("posts/index", {
+        title: "Diario web",
+        posts: posts,
+        user: req.session,
+      });
     }
   }
 
@@ -24,11 +35,11 @@ class PostController {
         date: Date(),
         image: req.body.image,
         summary: req.body.summary,
-        author: req.body.author,
+        author: req.session.name,
       });
       res.redirect("/posts");
     } else {
-      res.render("posts/create", { title: "Weblog, crear" });
+      res.render("posts/create", { title: "Crear publicación" });
     }
   }
 
@@ -55,7 +66,7 @@ class PostController {
           id: req.params.id,
         },
       });
-      res.render("posts/update", { title: "Weblog, editar", post: post });
+      res.render("posts/update", { title: "Editar publicación", post: post });
     }
   }
 
@@ -70,12 +81,16 @@ class PostController {
   }
 
   async view(req, res, next) {
-    const posts = await Post.findOne({
+    const post = await Post.findOne({
       where: {
         id: req.params.id,
       },
     });
-    res.render("posts/view", { title: "Weblog", posts: posts });
+    res.render("posts/view", {
+      title: 'Información de la publicación "' + post.title + '"',
+      post: post,
+      user: req.session,
+    });
   }
 
   async author(req, res, next) {
@@ -85,7 +100,11 @@ class PostController {
         author: req.params.id,
       },
     });
-    res.render("posts/author", { title: "Weblog", posts: posts });
+    res.render("posts/author", {
+      title: 'Publicaciones del autor "' + req.params.id + '"',
+      posts: posts,
+      user: req.session,
+    });
   }
 }
 

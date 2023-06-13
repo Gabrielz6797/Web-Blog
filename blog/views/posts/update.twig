@@ -1,18 +1,31 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
+  <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
     <h1>{{ title }}</h1>
-    <form method="POST">
-        <div>
+  </div>
+  <div class="container d-flex justify-content-center mt-auto p-3">
+    <div class="card bg-dark w-75 mb-3 p-3">
+      <div class="card-body">
+        <form method="POST">
+          <div class="mb-3">
             <label for="title">Título:</label><br />
-            <input id="title" name="title" type="text" value="{{ post.title }}" />
-        </div>
-
-        <div>
+            <input class="form-control" id="title" name="title" type="text" value="{{ post.title }}" />
+          </div>
+          <div class="mb-3">
             <label for="summary">Cuerpo:</label><br />
-            <textarea id="summary" name="summary">{{ post.summary }}</textarea>
-        </div>
-
-        <input type="submit" value="Actualizar" />
-    </form>
+            <textarea class="form-control" id="summary" name="summary">{{ post.summary }}</textarea>
+          </div>
+          <div class="mb-3">
+            <label for="image">imagen:</label><br />
+            <input class="form-control" type="file" id="image" name="image" accept="image/png, image/jpeg" />
+          </div>
+          <div class="text-center">
+            <input class="btn btn-primary" type="submit" value="Actualizar" />
+            <a class="btn btn-secondary" href="/posts" role="button">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}

@@ -41,16 +41,43 @@ class UserController {
           req.session.userName = data.login;
           req.session.name = data.name;
           req.session.email = data.email;
+          req.session.admin = false;
           res.redirect("/posts");
         } else {
           res.render("users/login", {
             title: "Iniciar sesión",
             message:
-              "Error, la cuenta de github no tiene los datos necesarios o estos son privados. Por favor inicie sesión de manera local",
+              "Error, la cuenta de github no tiene los datos necesarios o estos son privados. Por favor inicie sesión de manera local.",
           });
         }
       })
       .catch((err) => res.status(500).json({ err: err.message }));
+  }
+
+  async register(req, res, next) {
+    if (req.method === "POST") {
+      if (req.body.password === req.body.passwordConfirm) {
+        await User.create({
+          userName: req.body.userName,
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password,
+          admin: 0,
+        });
+        req.session.userName = req.body.userName;
+        req.session.name = req.body.name;
+        req.session.email = req.body.email;
+        req.session.admin = false;
+        res.redirect("/posts");
+      } else {
+        res.render("users/register", {
+          title: "Registrarse",
+          message: "Error, las contraseñas no coinciden.",
+        });
+      }
+    } else {
+      res.render("users/register", { title: "Registrarse" });
+    }
   }
 
   async login(req, res, next) {
@@ -68,34 +95,27 @@ class UserController {
         req.session.admin = user.admin;
         res.redirect("/posts");
       } else {
-        res.render("users/login", { title: "Registro", message:
-        "Error, correo o contraseña incorrectas" });
+        res.render("users/login", {
+          title: "Iniciar sesión",
+          message: "Error, credenciales incorrectas.",
+        });
       }
     } else {
       res.render("users/login", { title: "Iniciar sesión" });
     }
   }
 
-  async register(req, res, next) {
-    if (req.method === "POST") {
-      if (req.body.password === req.body.passwordConfirm) {
-        await User.create({
-          userName: req.body.userName,
-          name: req.body.name,
-          email: req.body.email,
-          password: req.body.password,
-          admin: 0
-        });
-        req.session.username = req.body.userName;
-        req.session.name = req.body.name;
-        req.session.email = req.body.email;
-        res.redirect("/posts");
-      } else {
-        res.render("users/register", { title: "Registro", message:
-        "Error, las contraseñas no coinciden" });
-      }
+  async logout(req, res, next) {
+    if (req.session) {
+      req.session.destroy((err) => {
+        if (err) {
+          res.status(400).send("Error al cerrar la sesión.");
+        } else {
+          res.redirect("/posts");
+        }
+      });
     } else {
-      res.render("users/register", { title: "Registro" });
+      res.end();
     }
   }
 }

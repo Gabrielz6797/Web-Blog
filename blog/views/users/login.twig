@@ -1,19 +1,43 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
+  <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
     <h1>{{ title }}</h1>
-    <h3>{{ message }}</h3>
-    <form method="POST">
-        <div>
+  </div>
+  {% if message != null %}
+    <div class="container-fluid text-center p-3">
+      <h3>{{ message }}</h3>
+    </div>
+  {% endif %}
+  <div class="container d-flex justify-content-center mt-auto p-3">
+    <div class="card bg-dark w-75 mb-3 p-3">
+      <div class="card-body">
+        <form method="POST">
+          <div class="mb-3">
             <label for="email">Correo electrónico:</label><br />
-            <input id="email" name="email" type="text" />
-        </div>
-
-        <div>
+            <input class="form-control" id="email" name="email" type="text" />
+          </div>
+          <div class="mb-3">
             <label for="password">Contraseña:</label><br />
-            <input id="password" name="password" type="password" />
+            <input class="form-control" id="password" name="password" type="password" />
+          </div>
+          <div class="text-center">
+            <input class="btn btn-primary" type="submit" value="Iniciar sesión" />
+            <a class="btn btn-secondary" href="/posts" role="button">Cancelar</a>
+          </div>
+        </form>
+        <hr />
+        <div class="text-center">
+          <a class="btn btn-primary" href="/users/auth" role="button">Iniciar sesión con GitHub</a>
         </div>
-
-        <input type="submit" value="Iniciar sesión" />
-    </form>
+        <hr />
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="p-1">¿No tiene cuenta aún?</div>
+          <div class="p-1">
+            <a class="btn btn-success" href="/users/register" role="button">Registrarse</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

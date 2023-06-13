@@ -1,15 +1,26 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-  <h1>{{ title }}</h1>
-  <h2>{{ posts.title }}</h2>
-  <p>{{ posts.summary }}</p>
-  <p>{{ posts.author }}</p>
-  <small>
-      <a href="/posts/update/{{ post.id }}">Editar</a>
-      &nbsp;|&nbsp;
-      <a href="/posts/delete/{{ post.id }}" onclick="return confirm('¿Está seguro?');">Borrar</a>
-  </small>
-  <hr />
-  <a href="/posts/create">¡Añadir una nueva publicación!</a>
+  <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
+    <h1>{{ title }}</h1>
+  </div>
+  <div class="container-fluid p-5">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.summary }}</p>
+    <p>{{ post.image }}</p>
+    <div class="d-flex align-items-center">
+      <div class="p-1">
+        <a class="btn btn-primary" href="/posts/author/{{ post.author }}" role="button">Autor: {{ post.author }}</a>
+      </div>
+      <small>
+        <div class="btn-group p-1" role="group">
+          <a class="btn btn-primary" href="/posts/view/{{ post.id }}" role="button">Comentarios</a>
+          {% if user.name != null and user.name == post.author %}
+            <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
+            <a class="btn btn-danger" href="/posts/delete/{{ post.id }}" role="button" onclick="return confirm('¿Está seguro?');">Borrar</a>
+          {% endif %}
+        </div>
+      </small>
+    </div>
+  </div>
 {% endblock %}

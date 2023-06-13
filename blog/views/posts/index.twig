@@ -1,42 +1,57 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-  <div class="container-fluid">
+  <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
     <h1>{{ title }}</h1>
-    <div class="">
-    <a href="/users/auth">
-      Login with GitHub
-    </a>
+  </div>
+  {% if flashMessage != null %}
+    <div class="container-fluid text-center p-3">
+      <h3>{{ flashMessage }}</h3>
+    </div>
+  {% endif %}
+  <div class="container-fluid p-5">
+    <div class="row">
+      <div class="col-9">
+        {% for post in posts %}
+          <h2>{{ post.title }}</h2>
+          <div class="summary" data-id="{{ post.id }}">
+            <p>{{ post.summary }}</p>
+          </div>
+          <p>{{ post.image }}</p>
+          <div class="d-flex align-items-center">
+            <div class="p-1">
+              <a class="btn btn-primary" href="/posts/author/{{ post.author }}" role="button">Autor: {{ post.author }}</a>
+            </div>
+            <small>
+              <div class="btn-group p-1" role="group">
+                <a class="btn btn-primary" href="/posts/view/{{ post.id }}" role="button">Comentarios</a>
+                {% if user.name != null and user.name == post.author %}
+                  <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
+                  <a class="btn btn-danger" href="/posts/delete/{{ post.id }}" role="button" onclick="return confirm('¿Está seguro?');">Borrar</a>
+                {% endif %}
+              </div>
+            </small>
+          </div>
+          <hr />
+        {% endfor %}
+        {% if user.name != null %}
+          <a href="/posts/create">Añadir una nueva publicación</a>
+        {% endif %}
+      </div>
+      <div class="col-3">
+        <div class="container">Autores</div>
+      </div>
     </div>
   </div>
-  </div>
-  <p>{{ flashMessage }}</p>
-  {% for post in posts %}
-    <h2>{{ post.title }}</h2>
-    <div class="summary" data-id="{{ post.id }}">
-    <p>{{ post.summary }}</p>
-    </div>
-    <p>{{ post.image }}</p>
-    <a href="/posts/author/{{ post.author }}">{{ post.author }}</a>
-    <small>
-        <a href="/posts/view/{{ post.id }}">Leer más</a>
-        &nbsp;|&nbsp;
-        <a href="/posts/update/{{ post.id }}">Editar</a>
-        &nbsp;|&nbsp;
-        <a href="/posts/delete/{{ post.id }}" onclick="return confirm('¿Está seguro?');">Borrar</a>
-    </small>
-    <hr />
-  {% endfor %}
-  <a href="/posts/create">¡Añadir una nueva publicación!</a>
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-      $('.summary').each(function(i, obj) {
-        if($(this).html().length > 307){
-          var id = $(this).data('id');
-          $(this).html($(this).html().substring(0,307) + "... " + '<a href="/posts/view/' + id + '">Leer más</a>');
-        }
-      });
-    </script>
+  <script>
+    $('.summary').each(function (i, obj) {
+      if ($(this).html().length > 307) {
+        var id = $(this).data('id')
+        $(this).html($(this).html().substring(0, 307) + '... ' + '<a href="/posts/view/' + id + '">Leer más</a>')
+      }
+    })
+  </script>
 {% endblock %}
