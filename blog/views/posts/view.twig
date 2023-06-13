@@ -14,13 +14,17 @@
       </div>
       <small>
         <div class="btn-group p-1" role="group">
-          <a class="btn btn-primary" href="/posts/view/{{ post.id }}" role="button">Comentarios</a>
+          <a class="btn btn-primary" href="#" role="button">Comentarios</a>
           {% if user.name != null and user.name == post.author %}
             <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
             <a class="btn btn-danger" href="/posts/delete/{{ post.id }}" role="button" onclick="return confirm('¿Está seguro?');">Borrar</a>
           {% endif %}
         </div>
       </small>
+    </div>
+    <hr />
+    <div class="p-1">
+      <a class="btn btn-secondary" href="/posts" role="button">Regresar a la página principal</a>
     </div>
   </div>
 {% endblock %}

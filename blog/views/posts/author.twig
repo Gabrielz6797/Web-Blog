@@ -13,7 +13,7 @@
       <p>{{ post.image }}</p>
       <div class="d-flex align-items-center">
         <div class="p-1">
-          <a class="btn btn-primary" href="/posts/author/{{ post.author }}" role="button">Autor: {{ post.author }}</a>
+          <a class="btn btn-primary" href="#" role="button">Autor: {{ post.author }}</a>
         </div>
         <small>
           <div class="btn-group p-1" role="group">
@@ -27,5 +27,8 @@
       </div>
       <hr />
     {% endfor %}
+    <div class="p-1">
+      <a class="btn btn-secondary" href="/posts" role="button">Regresar a la página principal</a>
+    </div>
   </div>
 {% endblock %}
