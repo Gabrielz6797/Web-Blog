@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       Post.hasMany(models.Comment, {
         foreignKey: "postId",
       });
+      Post.hasOne(models.Category, {
+        foreignKey: "category",
+      });
     }
   }
   Post.init(
@@ -21,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       image: DataTypes.BLOB,
       summary: DataTypes.TEXT,
       author: DataTypes.STRING,
+      category: DataTypes.STRING,
     },
     {
       sequelize,

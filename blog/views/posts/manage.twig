@@ -26,27 +26,23 @@
             <small>
               <div class="btn-group px-2" role="group">
                 <a class="btn btn-primary" href="/posts/view/{{ post.id }}" role="button">Comentarios</a>
-                {% if user.name != null and user.name == post.author %}
-                  <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
-                  <a class="btn btn-danger" href="/posts/delete/{{ post.id }}" role="button" onclick="return confirm('¿Está seguro?');">Borrar</a>
-                {% endif %}
+                <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
+                <a class="btn btn-danger" href="/posts/delete/{{ post.id }}" role="button" onclick="return confirm('¿Está seguro?');">Borrar</a>
               </div>
             </small>
           </div>
           <hr />
         {% endfor %}
-        {% if user.name != null %}
-          <div>
-            <a class="btn btn-success" href="/posts/create" role="button">Añadir una nueva publicación</a>
-            <hr />
-          </div>
-        {% endif %}
+        <div>
+          <a class="btn btn-success" href="/posts/create" role="button">Añadir una nueva publicación</a>
+          <hr />
+        </div>
         <div>
           <nav>
             <ul class="pagination">
               {% if page > 1 %}
                 <li class="page-item">
-                  <a class="page-link" href="/posts?page={{ page - 1 }}">Previa</a>
+                  <a class="page-link" href="/posts/manage?page={{ page - 1 }}">Previa</a>
                 </li>
               {% else %}
                 <li class="page-item active disabled">
@@ -55,15 +51,15 @@
               {% endif %}
               {% if page == 1 %}
                 <li class="page-item active disabled">
-                  <a class="page-link" href="/posts?page=1">1</a>
+                  <a class="page-link" href="/posts/manage?page=1">1</a>
                 </li>
               {% elseif page != 1 and page <= 4 %}
                 <li class="page-item">
-                  <a class="page-link" href="/posts?page=1">1</a>
+                  <a class="page-link" href="/posts/manage?page=1">1</a>
                 </li>
               {% elseif page > 4 %}
                 <li class="page-item">
-                  <a class="page-link" href="/posts?page=1">1</a>
+                  <a class="page-link" href="/posts/manage?page=1">1</a>
                 </li>
                 <li class="page-item active disabled">
                   <a class="page-link">...</a>
@@ -72,7 +68,7 @@
               {% for i in 2..pageNumber - 1 %}
                 {% if page != i and i - 3 < page and i + 3 > page %}
                   <li class="page-item">
-                    <a class="page-link" href="/posts?page={{ i }}">{{ i }}</a>
+                    <a class="page-link" href="/posts/manage?page={{ i }}">{{ i }}</a>
                   </li>
                 {% elseif page == i %}
                   <li class="page-item active disabled">
@@ -80,11 +76,11 @@
                   </li>
                 {% elseif page != i and i == 1 %}
                   <li class="page-item">
-                    <a class="page-link" href="/posts?page={{ i }}">{{ i }}</a>
+                    <a class="page-link" href="/posts/manage?page={{ i }}">{{ i }}</a>
                   </li>
                 {% elseif page != i and i == pageNumber %}
                   <li class="page-item">
-                    <a class="page-link" href="/posts?page={{ i }}">{{ i }}</a>
+                    <a class="page-link" href="/posts/manage?page={{ i }}">{{ i }}</a>
                   </li>
                 {% endif %}
               {% endfor %}
@@ -93,20 +89,20 @@
                   <a class="page-link">...</a>
                 </li>
                 <li class="page-item">
-                  <a class="page-link" href="/posts?page={{ pageNumber }}">{{ pageNumber }}</a>
+                  <a class="page-link" href="/posts/manage?page={{ pageNumber }}">{{ pageNumber }}</a>
                 </li>
               {% elseif page != pageNumber and page >= pageNumber - 3 %}
                 <li class="page-item">
-                  <a class="page-link" href="/posts?page={{ pageNumber }}">{{ pageNumber }}</a>
+                  <a class="page-link" href="/posts/manage?page={{ pageNumber }}">{{ pageNumber }}</a>
                 </li>
               {% elseif page == pageNumber %}
                 <li class="page-item active disabled">
-                  <a class="page-link" href="/posts?page={{ pageNumber }}">{{ pageNumber }}</a>
+                  <a class="page-link" href="/posts/manage?page={{ pageNumber }}">{{ pageNumber }}</a>
                 </li>
               {% endif %}
               {% if page < pageNumber %}
                 <li class="page-item">
-                  <a class="page-link" href="/posts?page={{ page + 1 }}">Siguiente</a>
+                  <a class="page-link" href="/posts/manage?page={{ page + 1 }}">Siguiente</a>
                 </li>
               {% else %}
                 <li class="page-item active disabled">
@@ -119,19 +115,34 @@
       </div>
       <div class="col-3">
         <h3 class="m-0">Autores:</h3>
-        {% for author in authors %}
-          <div>
-            <a class="link-success fs-4" href="/posts/author/{{ author.author }}">{{ author.author }}</a>
-          </div>
-        {% endfor %}
+        <div class="row">
+          {% for author in authors %}
+            <div class="col-8">
+              <a class="link-success fs-4" href="/posts/author/{{ author.author }}">{{ author.author }}</a>
+            </div>
+            <div class="col-4">
+              <a class="link-danger fs-4" href="/posts/deleteAuthor/{{ author.author }}" onclick="return confirm('¿Borrar todas las publicaciones de este autor?');">Borrar</a>
+            </div>
+          {% endfor %}
+        </div>
         <hr />
         <h3 class="m-0">Categorías:</h3>
-        {% for category in categories %}
-          <div>
-            <a class="link-success fs-4" href="/posts/category/{{ category.name }}">{{ category.name }}</a>
-          </div>
-        {% endfor %}
+        <div class="row">
+          {% for category in categories %}
+            <div class="col-8">
+              <a class="link-success fs-4" href="/posts/category/{{ category.name }}">{{ category.name }}</a>
+            </div>
+            <div class="col-4">
+              <a class="link-danger fs-4" href="/posts/deleteCategory/{{ category.name }}" onclick="return confirm('¿Está seguro?');">Borrar</a>
+            </div>
+          {% endfor %}
+          <a class="link-primary fs-4" href="/posts/createCategory">Crear nueva categoría</a>
+        </div>
       </div>
+    </div>
+    <hr />
+    <div>
+      <a class="btn btn-secondary" href="/posts" role="button">Regresar a la página principal</a>
     </div>
   </div>
 {% endblock %}
