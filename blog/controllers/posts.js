@@ -1,5 +1,6 @@
 const Post = require("../models").Post;
 const Category = require("../models").Category;
+const User = require("../models").User;
 
 class PostController {
   async index(req, res, next) {
@@ -183,7 +184,10 @@ class PostController {
     });
     const categories = await Category.findAll({
       attributes: ["name"],
-      group: ["name"],
+      order: [["name", "ASC"]],
+    });
+    const users = await User.findAll({
+      attributes: ["name", "admin"],
       order: [["name", "ASC"]],
     });
     let postCount = Object.keys(posts).length;
@@ -226,6 +230,7 @@ class PostController {
         posts: paginatedPosts,
         authors: authors,
         categories: categories,
+        users: users,
         user: req.session,
         page: page,
         pageNumber: pageNumber,
@@ -265,7 +270,7 @@ class PostController {
         author: req.params.id,
       },
     });
-    req.session.flashMessage = "Se eliminaron las publicaciones del author";
+    req.session.flashMessage = "Se eliminaron las publicaciones del autor";
     res.redirect("/posts/manage");
   }
 
@@ -286,6 +291,46 @@ class PostController {
         },
       }
     );
+    res.redirect("/posts/manage");
+  }
+
+  async deleteUser(req, res, next) {
+    await User.destroy({
+      where: {
+        name: req.params.id,
+      },
+    });
+    req.session.flashMessage = "Se eliminó el usuario";
+    res.redirect("/posts/manage");
+  }
+
+  async demoteUser(req, res, next) {
+    await User.update(
+      {
+        admin: 0,
+      },
+      {
+        where: {
+          name: req.params.id,
+        },
+      }
+    );
+    req.session.flashMessage = "Se degradaron los permisos del usuario";
+    res.redirect("/posts/manage");
+  }
+
+  async promoteUser(req, res, next) {
+    await User.update(
+      {
+        admin: 1,
+      },
+      {
+        where: {
+          name: req.params.id,
+        },
+      }
+    );
+    req.session.flashMessage = "Se promovieron los permisos del usuario";
     res.redirect("/posts/manage");
   }
 }

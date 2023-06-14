@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col-9">
         {% for post in posts %}
-          <h2>{{ post.title }} <small class="text-secondary">{{ post.date|date("d/m/Y") }}</small></h2>
+          <h2>{{ post.title }} <small class="text-secondary">{{ post.date|date('d/m/Y') }}</small></h2>
           <div class="summary" data-id="{{ post.id }}">
             <p>{{ post.summary }}</p>
           </div>
@@ -138,6 +138,34 @@
           {% endfor %}
           <a class="link-primary fs-4" href="/posts/createCategory">Crear nueva categoría</a>
         </div>
+        <hr />
+        <h3 class="m-0">Usuarios:</h3>
+        <hr />
+        {% for person in users %}
+          <div>
+            <p class="text-success fs-4 m-0">{{ person.name }}:</p>
+          </div>
+          <div class="row">
+            {% if person.name != user.name %}
+              <div class="col-6">
+                {% if person.admin %}
+                  <a class="link-danger fs-4" href="/posts/demoteUser/{{ person.name }}" onclick="return confirm('Esta acción removera al usaurio de los administradores, ¿continuar?');">Degradar</a>
+                {% else %}
+                  <a class="link-primary fs-4" href="/posts/promoteUser/{{ person.name }}" onclick="return confirm('Esta acción convertira al usaurio en administrador, ¿continuar?');">Promover</a>
+                {% endif %}
+              </div>
+            {% else %}
+              <p class="text-success fs-4 m-0">Usuario actual</p>
+            {% endif %}
+            {% if person.name != user.name %}
+              <div class="col-6">
+                <a class="link-danger fs-4" href="/posts/deleteUser/{{ person.name }}" onclick="return confirm('¿Está seguro?');">Borrar</a>
+              </div>
+            {% endif %}
+          </div>
+          <hr />
+        {% endfor %}
+        <hr />
       </div>
     </div>
     <hr />
