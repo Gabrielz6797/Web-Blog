@@ -2,7 +2,7 @@
 
 {% block body %}
   <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
-    <h1>{{ title }}</h1>
+    <h1 class="m-0">{{ title }}</h1>
   </div>
   <div class="container-fluid p-5">
     {% for post in posts %}
@@ -12,11 +12,11 @@
       </div>
       <p>{{ post.image }}</p>
       <div class="d-flex align-items-center">
-        <div class="p-1">
-          <a class="btn btn-primary" href="#" role="button">Autor: {{ post.author }}</a>
+        <div>
+          <a class="btn btn-primary" role="button" active disabled>Autor: {{ post.author }}</a>
         </div>
         <small>
-          <div class="btn-group p-1" role="group">
+          <div class="btn-group px-2" role="group">
             <a class="btn btn-primary" href="/posts/view/{{ post.id }}" role="button">Comentarios</a>
             {% if user.name != null and user.name == post.author %}
               <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
@@ -27,7 +27,7 @@
       </div>
       <hr />
     {% endfor %}
-    <div class="p-1">
+    <div>
       <a class="btn btn-secondary" href="/posts" role="button">Regresar a la página principal</a>
     </div>
   </div>

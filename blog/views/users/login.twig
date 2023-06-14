@@ -2,11 +2,11 @@
 
 {% block body %}
   <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
-    <h1>{{ title }}</h1>
+    <h1 class="m-0">{{ title }}</h1>
   </div>
   {% if message != null %}
     <div class="container-fluid text-center p-3">
-      <h3>{{ message }}</h3>
+      <h3 class="m-0">{{ message }}</h3>
     </div>
   {% endif %}
   <div class="container d-flex justify-content-center mt-auto p-3">
@@ -32,8 +32,8 @@
         </div>
         <hr />
         <div class="d-flex justify-content-center align-items-center">
-          <div class="p-1">¿No tiene cuenta aún?</div>
-          <div class="p-1">
+          <div>¿No tiene cuenta aún?</div>
+          <div class="px-2">
             <a class="btn btn-success" href="/users/register" role="button">Registrarse</a>
           </div>
         </div>

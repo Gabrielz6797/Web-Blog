@@ -2,30 +2,49 @@ const Post = require("../models").Post;
 
 class PostController {
   async index(req, res, next) {
-    const posts = await Post.findAll();
+    const posts = await Post.findAll({ order: [["createdAt", "DESC"]] });
+    let postCount  = Object.keys(posts).length;
+    let flashMessage = undefined;
     if (req.session.flashMessage) {
-      let flashMessage = req.session.flashMessage;
+      flashMessage = req.session.flashMessage;
       req.session.flashMessage = undefined;
-      res.render("posts/index", {
-        title: "Diario web",
-        posts: posts,
-        user: req.session,
-        flashMessage: flashMessage,
-      });
-    } else {
-      console.log("");
-      console.log("User:");
-      console.log("userName: " + req.session.userName);
-      console.log("name: " + req.session.name);
-      console.log("email: " + req.session.email);
-      console.log("admin: " + req.session.admin);
-      console.log("");
-      res.render("posts/index", {
-        title: "Diario web",
-        posts: posts,
-        user: req.session,
-      });
     }
+    let page = 1;
+    if (req.query.page) {
+      try {
+        page = parseInt(req.query.page);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    req.session.page = page
+    let limit = 5;
+    let pageNumber = Math.ceil(postCount / limit);
+    // calculating the starting and ending index
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = {};
+    if (endIndex < posts.length) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+    let paginatedPosts = posts.slice(startIndex, endIndex);
+    res.render("posts/index", {
+      title: "Diario web",
+      posts: paginatedPosts,
+      user: req.session,
+      page: page,
+      pageNumber: pageNumber,
+      flashMessage: flashMessage,
+    });
   }
 
   async create(req, res, next) {
@@ -39,7 +58,10 @@ class PostController {
       });
       res.redirect("/posts");
     } else {
-      res.render("posts/create", { title: "Crear publicación" });
+      res.render("posts/create", {
+        title: "Crear publicación",
+        user: req.session,
+      });
     }
   }
 
@@ -66,7 +88,11 @@ class PostController {
           id: req.params.id,
         },
       });
-      res.render("posts/update", { title: "Editar publicación", post: post });
+      res.render("posts/update", {
+        title: "Editar publicación",
+        post: post,
+        user: req.session,
+      });
     }
   }
 

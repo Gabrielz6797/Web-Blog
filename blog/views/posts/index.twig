@@ -1,15 +1,16 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-  <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
-    <h1>{{ title }}</h1>
+  <div class="container-fluid d-flex align-items-center justify-content-center p-3" style="background-color: rgb(19, 54, 78);">
+    <h1 class="m-0">{{ title }}</h1>
   </div>
   {% if flashMessage != null %}
     <div class="container-fluid text-center p-3">
-      <h3>{{ flashMessage }}</h3>
+      <h3 class="m-0">{{ flashMessage }}</h3>
     </div>
+    <hr />
   {% endif %}
-  <div class="container-fluid p-5">
+  <div class="container-fluid px-5 py-3">
     <div class="row">
       <div class="col-9">
         {% for post in posts %}
@@ -19,11 +20,11 @@
           </div>
           <p>{{ post.image }}</p>
           <div class="d-flex align-items-center">
-            <div class="p-1">
+            <div>
               <a class="btn btn-primary" href="/posts/author/{{ post.author }}" role="button">Autor: {{ post.author }}</a>
             </div>
             <small>
-              <div class="btn-group p-1" role="group">
+              <div class="btn-group px-2" role="group">
                 <a class="btn btn-primary" href="/posts/view/{{ post.id }}" role="button">Comentarios</a>
                 {% if user.name != null and user.name == post.author %}
                   <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
@@ -35,8 +36,86 @@
           <hr />
         {% endfor %}
         {% if user.name != null %}
-          <a href="/posts/create">Añadir una nueva publicación</a>
+          <div>
+            <a class="btn btn-success" href="/posts/create" role="button">Añadir una nueva publicación</a>
+            <hr />
+          </div>
         {% endif %}
+        <div>
+          <nav>
+            <ul class="pagination">
+              {% if page > 1 %}
+                <li class="page-item">
+                  <a class="page-link" href="/posts?page={{ page - 1 }}">Previa</a>
+                </li>
+              {% else %}
+                <li class="page-item active disabled">
+                  <a class="page-link">Previa</a>
+                </li>
+              {% endif %}
+              {% if page == 1 %}
+                <li class="page-item active disabled">
+                  <a class="page-link" href="/posts?page=1">1</a>
+                </li>
+              {% elseif page != 1 and page <= 4 %}
+                <li class="page-item">
+                  <a class="page-link" href="/posts?page=1">1</a>
+                </li>
+              {% elseif page > 4 %}
+                <li class="page-item">
+                  <a class="page-link" href="/posts?page=1">1</a>
+                </li>
+                <li class="page-item active disabled">
+                  <a class="page-link">...</a>
+                </li>
+              {% endif %}
+              {% for i in 2..pageNumber - 1 %}
+                {% if page != i and i - 3 < page and i + 3 > page %}
+                  <li class="page-item">
+                    <a class="page-link" href="/posts?page={{ i }}">{{ i }}</a>
+                  </li>
+                {% elseif page == i %}
+                  <li class="page-item active disabled">
+                    <a class="page-link">{{ i }}</a>
+                  </li>
+                {% elseif page != i and i == 1 %}
+                  <li class="page-item">
+                    <a class="page-link" href="/posts?page={{ i }}">{{ i }}</a>
+                  </li>
+                {% elseif page != i and i == pageNumber %}
+                  <li class="page-item">
+                    <a class="page-link" href="/posts?page={{ i }}">{{ i }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              {% if page < pageNumber - 3 %}
+                <li class="page-item active disabled">
+                  <a class="page-link">...</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="/posts?page={{ pageNumber }}">{{ pageNumber }}</a>
+                </li>
+              {% elseif page != pageNumber and page >= pageNumber - 3 %}
+                <li class="page-item">
+                  <a class="page-link" href="/posts?page={{ pageNumber }}">{{ pageNumber }}</a>
+                </li>
+              {% elseif page == pageNumber %}
+                <li class="page-item active disabled">
+                  <a class="page-link" href="/posts?page={{ pageNumber }}">{{ pageNumber }}</a>
+                </li>
+              {% endif %}
+              {% if page < pageNumber %}
+                <li class="page-item">
+                  <a class="page-link" href="/posts?page={{ page + 1 }}">Siguiente</a>
+                </li>
+              {% else %}
+                <li class="page-item active disabled">
+                  <a class="page-link">Siguiente</a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
       </div>
       <div class="col-3">
         <div class="container">Autores</div>

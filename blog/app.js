@@ -16,6 +16,8 @@ dotenv.config();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "twig");
 
+app.use('/favicon.ico', express.static('public/images/favicon.ico'));
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
