@@ -15,7 +15,11 @@
       <div class="col-9">
         {% for post in posts %}
           <h2>{{ post.title }} <small class="text-secondary">{{ post.date|date('d/m/Y') }}</small></h2>
-          <img src="{{ post.image }}"/>
+          {% if post.image != null %}
+            <div class="overflow-hidden d-flex align-items-center justify-content-center" style="height:350px; width:850px;">
+              <img style="max-width: 100%; max-height: 100%; display: block;" src="{{ post.image }}"/>
+            </div>
+          {% endif %}
           <div class="summary" data-id="{{ post.id }}">
             <p>{{ post.summary }}</p>
           </div>

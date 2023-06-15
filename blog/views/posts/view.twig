@@ -6,7 +6,11 @@
   </div>
   <div class="container-fluid px-5 py-3">
     <h2>{{ post.title }} <small class="text-secondary">{{ post.date|date("d/m/Y") }}</small></h2>
-    <img src="{{ post.image }}"/>
+    {% if post.image != null %}
+      <div class="overflow-hidden d-flex align-items-center justify-content-center" style="height:350px; width:850px;">
+        <img style="max-width: 100%; max-height: 100%; display: block;" src="{{ post.image }}"/>
+      </div>
+    {% endif %}
     <p>{{ post.summary }}</p>
     <div class="d-flex align-items-center">
       <div>
@@ -14,7 +18,6 @@
       </div>
       <small>
         <div class="btn-group px-2" role="group">
-          <a class="btn btn-primary" role="button" active disabled>Comentarios</a>
           {% if (user.name != null and user.name == post.author) or user.admin %}
             <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
             <a class="btn btn-danger" href="/posts/delete/{{ post.id }}" role="button" onclick="return confirm('¿Está seguro?');">Borrar</a>
@@ -23,6 +26,33 @@
       </small>
     </div>
     <hr />
+    <h2>Comentarios</h2>
+    <div>
+      {% for comment in comments %}
+        <p>{{ comment.email }} <small class="text-secondary">{{ comment.date|date("d/m/Y") }}</small>
+          {% if (user.name != null and user.email == comment.email) or user.admin %}
+            <a class="link-danger" href="/posts/deleteComment/{{ comment.id }}" onclick="return confirm('¿Borrar comentario?');">Borrar</a>
+          {% endif %}
+        </p>
+        <p>{{ comment.comment }}</p>
+        
+        <hr />
+      {% endfor %}
+    </div>
+    {% if user.name != null  %}
+      <form method="POST">
+        <div class="mb-3">
+          <label for="comment">Comentario:</label><br />
+          <textarea class="form-control" id="comment" name="comment" maxlength="200" required></textarea>
+        </div>
+        <input type="hidden" id="postId" name="postId" value="{{ post.id }}">
+        <input type="hidden" id="email" name="email" value="{{ user.email }}">
+        <div>
+          <input class="btn btn-primary" type="submit" value="Publicar" />
+        </div>
+      </form>
+      <hr />
+    {% endif %}
     <div>
       <a class="btn btn-secondary" href="/posts" role="button">Regresar a la página principal</a>
     </div>

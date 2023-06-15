@@ -1,6 +1,8 @@
 const Post = require("../models").Post;
 const Category = require("../models").Category;
 const User = require("../models").User;
+const Comment = require("../models").Comment;
+const sequelize = require("sequelize");
 
 class PostController {
   async index(req, res, next) {
@@ -15,6 +17,17 @@ class PostController {
       group: ["name"],
       order: [["name", "ASC"]],
     });
+  //   const comments = await Comment.findAll({
+  //     attribute: ['postId', [sequelize.fn("COUNT", sequelize.col('posts.id')), "count"]],
+  //     include: [
+  //         {
+  //             model: Post,
+  //             attributes: []
+  //         }
+  //     ],
+  //     group: ['id']
+  // })
+  //   console.log(comments);
     let postCount = Object.keys(posts).length;
     let flashMessage = undefined;
     if (req.session.flashMessage) {
@@ -147,16 +160,46 @@ class PostController {
   }
 
   async view(req, res, next) {
-    const post = await Post.findOne({
+    if (req.method === "POST") {
+      await Comment.create({
+        comment: req.body.comment,
+        postId: req.body.postId,
+        date: Date(),
+        email: req.body.email,
+      });
+      res.redirect("/posts/view/" + req.body.postId);
+    } else {
+      const post = await Post.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      const comments = await Comment.findAll({
+        where: {
+          postId: req.params.id,
+        },
+      });
+      res.render("posts/view", {
+        title: 'Información de la publicación "' + post.title + '"',
+        post: post,
+        user: req.session,
+        comments: comments,
+      });
+    }
+  }
+
+  async deleteComment(req, res, next) {
+    const comment = await Comment.findOne({
       where: {
         id: req.params.id,
       },
     });
-    res.render("posts/view", {
-      title: 'Información de la publicación "' + post.title + '"',
-      post: post,
-      user: req.session,
+    await Comment.destroy({
+      where: {
+        id: req.params.id,
+      },
     });
+    res.redirect("/posts/view/" + comment.postId);
   }
 
   async author(req, res, next) {
