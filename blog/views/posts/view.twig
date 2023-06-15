@@ -4,8 +4,8 @@
   <div class="container-fluid text-center p-3" style="background-color: rgb(19, 54, 78);">
     <h1 class="m-0">{{ title }}</h1>
   </div>
-  <div class="container-fluid p-5">
-    <h2>{{ post.title }}</h2>
+  <div class="container-fluid px-5 py-3">
+    <h2>{{ post.title }} <small class="text-secondary">{{ post.date|date("d/m/Y") }}</small></h2>
     <p>{{ post.summary }}</p>
     <img src="{{ post.image }}"/>
     <div class="d-flex align-items-center">
@@ -15,7 +15,7 @@
       <small>
         <div class="btn-group px-2" role="group">
           <a class="btn btn-primary" role="button" active disabled>Comentarios</a>
-          {% if user.name != null and user.name == post.author %}
+          {% if (user.name != null and user.name == post.author) or user.admin %}
             <a class="btn btn-secondary" href="/posts/update/{{ post.id }}" role="button">Editar</a>
             <a class="btn btn-danger" href="/posts/delete/{{ post.id }}" role="button" onclick="return confirm('¿Está seguro?');">Borrar</a>
           {% endif %}

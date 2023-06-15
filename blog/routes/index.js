@@ -10,11 +10,15 @@ router.get("/users", function (req, res, next) {
   res.redirect("/posts");
 });
 
+router.get("/posts/view", function (req, res, next) {
+  res.redirect("/posts");
+});
+
 router.get("/posts/author", function (req, res, next) {
   res.redirect("/posts");
 });
 
-router.get("/posts/view", function (req, res, next) {
+router.get("/posts/category", function (req, res, next) {
   res.redirect("/posts");
 });
 

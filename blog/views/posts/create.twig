@@ -10,7 +10,7 @@
         <form action="/posts/post" enctype="multipart/form-data" method="POST">
           <div class="mb-3">
             <label for="title">Título:</label><br />
-            <input class="form-control" id="title" name="title" type="text" />
+            <input class="form-control" id="title" name="title" type="text" required />
           </div>
           <div class="mb-3">
             <label for="summary">Cuerpo:</label><br />
@@ -19,6 +19,15 @@
           <div class="mb-3">
             <label for="image">imagen:</label><br />
             <input class="form-control" type="file" id="image" name="image" accept="image/*" />
+          </div>
+          <div class="mb-3">
+            <label for="category">Categoría:</label><br />
+            <select class="form-select" id="category" name="category" required>
+              <option selected></option>
+              {% for category in categories %}
+                <option value="{{ category.name }}">{{ category.name }}</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="text-center">
             <input class="btn btn-primary" type="submit" value="Crear" />
