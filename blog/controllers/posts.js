@@ -79,8 +79,8 @@ class PostController {
       if (!req.file) {
         console.log("No file upload");
       } else {
-        console.log("Filename: "+ req.file.filename)
-        var imgsrc = 'http://127.0.0.1/images/' + req.file.filename
+        console.log("Filename: " + req.file.filename);
+        var imgsrc = "http://127.0.0.1/images/" + req.file.filename;
       }
       await Post.create({
         title: req.body.title,
@@ -110,8 +110,8 @@ class PostController {
       if (!req.file) {
         console.log("No file upload");
       } else {
-        console.log("Filename: "+ req.file.filename)
-        var imgsrc = 'http://127.0.0.1/images/' + req.file.filename
+        console.log("Filename: " + req.file.filename);
+        var imgsrc = "http://127.0.0.1/images/" + req.file.filename;
       }
       await Post.update(
         {
