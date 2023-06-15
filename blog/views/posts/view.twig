@@ -7,7 +7,7 @@
   <div class="container-fluid p-5">
     <h2>{{ post.title }}</h2>
     <p>{{ post.summary }}</p>
-    <p>{{ post.image }}</p>
+    <img src="{{ post.image }}"/>
     <div class="d-flex align-items-center">
       <div>
         <a class="btn btn-primary" href="/posts/author/{{ post.author }}" role="button">Autor: {{ post.author }}</a>

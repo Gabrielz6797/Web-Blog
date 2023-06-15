@@ -7,7 +7,7 @@
   <div class="container d-flex justify-content-center mt-auto p-3">
     <div class="card bg-dark w-75 mb-3 p-3">
       <div class="card-body">
-        <form method="POST">
+        <form action="/posts/post" enctype="multipart/form-data" method="POST">
           <div class="mb-3">
             <label for="title">Título:</label><br />
             <input class="form-control" id="title" name="title" type="text" />
@@ -18,7 +18,7 @@
           </div>
           <div class="mb-3">
             <label for="image">imagen:</label><br />
-            <input class="form-control" type="file" id="image" name="image" accept="image/png, image/jpeg" />
+            <input class="form-control" type="file" id="image" name="image" accept="image/*" />
           </div>
           <div class="text-center">
             <input class="btn btn-primary" type="submit" value="Crear" />
