@@ -31,10 +31,10 @@ router
   .all("/:controller", (req, res, next) => {
     new controllers[req.params.controller]().index(req, res, next);
   })
-  .all("/:controller/:action", upload.single('image'),(req, res, next) => {
+  .all("/:controller/:action", upload.single('image'), (req, res, next) => {
     new controllers[req.params.controller]()[req.params.action](req, res, next);
   })
-  .all("/:controller/:action/:id", (req, res, next) => {
+  .all("/:controller/:action/:id", upload.single('image'), (req, res, next) => {
     new controllers[req.params.controller]()[req.params.action](req, res, next);
   });
 

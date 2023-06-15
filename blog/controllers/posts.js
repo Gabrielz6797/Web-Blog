@@ -63,10 +63,16 @@ class PostController {
 
   async create(req, res, next) {
     if (req.method === "POST") {
+      if (!req.file) {
+        console.log("No file upload");
+      } else {
+        console.log("Filename: "+ req.file.filename)
+        var imgsrc = 'http://127.0.0.1/images/' + req.file.filename
+      }
       await Post.create({
         title: req.body.title,
         date: Date(),
-        image: req.body.image,
+        image: imgsrc,
         summary: req.body.summary,
         author: req.session.name,
         category: req.body.category,
@@ -86,7 +92,7 @@ class PostController {
     }
   }
 
-  async post(req, res, next) {
+  async update(req, res, next) {
     if (req.method === "POST") {
       if (!req.file) {
         console.log("No file upload");
@@ -94,27 +100,11 @@ class PostController {
         console.log("Filename: "+ req.file.filename)
         var imgsrc = 'http://127.0.0.1/images/' + req.file.filename
       }
-      await Post.create({
-        title: req.body.title,
-        date: Date(),
-        image: imgsrc,
-        summary: req.body.summary,
-        author: req.session.name,
-      });
-      res.redirect("/posts");
-    } else {
-      res.redirect("/users");
-
-    }
-  }
-
-  async update(req, res, next) {
-    if (req.method === "POST") {
       await Post.update(
         {
           title: req.body.title,
           date: Date(),
-          image: req.body.image,
+          image: imgsrc,
           summary: req.body.summary,
           author: req.body.author,
           category: req.body.category,
